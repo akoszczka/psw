@@ -13,7 +13,6 @@ void wyczysc(char plansza[rozmiar_y][rozmiar_x])
 }
 void rysuj(char plansza[rozmiar_y][rozmiar_x])
 {
-    system("cls");
     int i,j;
     for(i=0; i<rozmiar_y; i++){
         for(j=0; j<rozmiar_x; j++){
@@ -28,62 +27,74 @@ void pisz(char plansza[rozmiar_y][rozmiar_x])
   plansza[(rozmiar_y/2)][(rozmiar_x/2)+1]='X';
   plansza[(rozmiar_y/2)][(rozmiar_x/2)-1]='X';
 
-  plansza[0][0]='X';
   plansza[0][1]='X';
-  plansza[0][2]='X';
-  plansza[1][0]='X';
+  plansza[1][2]='X';
+  plansza[2][0]='X';
   plansza[2][1]='X';
+  plansza[2][2]='X';
 }
 
-void check(char plansza[rozmiar_y][rozmiar_x])
-{
-    int ls=0, i=0, j=0;
-    for(i=0; i<26;i++)
-    {
-        for(j=0; j<71; j++)
+void plansza_krok(char plansza_a[rozmiar_y][rozmiar_x], char plansza_b[rozmiar_y][rozmiar_x]){
+    int i,j;
+
+    for(i=0; i<rozmiar_y; i++)
+        for(j=0; j<rozmiar_x; j++){
+            plansza_a[i][j]=plansza_b[i][j];
+        }
+}
+
+void krok(char plansza_a[rozmiar_y][rozmiar_x], char plansza_b[rozmiar_y][rozmiar_x]){
+
+    int i,j;
+    int ls=0;
+
+    for(i=0; i<rozmiar_y; i++){
+        for(j=0; j<rozmiar_x; j++)
         {
-    if (plansza[i-1][j-1]=='X'){
-        ls++;
-    }
-    if (plansza[i][j-1]=='X'){
-        ls++;
-    }
-    if (plansza[i-1][j]=='X'){
-        ls++;
-    }
-    if (plansza[i+1][j+1]=='X'){
-        ls++;
-    }
-    if (plansza[i][j+1]=='X'){
-        ls++;
-    }
-    if (plansza[i+1][j]=='X'){
-        ls++;
-    }
-   /* if(ls<2){
-        plansza[i][j]=' ';
-    }
-    else{
-        plansza[i][j]='X';
-    }*/
+            if(plansza_a[i-1][j-1]=='X') ls++;
+            if(plansza_a[i-1][j]=='X') ls++;
+            if(plansza_a[i-1][j+1]=='X') ls++;
+            if(plansza_a[i][j-1]=='X') ls++;
+            if(plansza_a[i][j+1]=='X') ls++;
+            if(plansza_a[i+1][j-1]=='X') ls++;
+            if(plansza_a[i+1][j]=='X') ls++;
+            if(plansza_a[i+1][j+1]=='X') ls++;
+
+            if(ls==3)
+                plansza_b[i][j]='X';
+            else if(ls==2 && plansza_a[i][j]=='X')
+                    plansza_b[i][j]='X';
+
+            else if(ls<2 || ls>3)
+                    plansza_b[i][j]=' ';
+
+            ls=0;
         }
     }
+    plansza_krok(plansza_a,plansza_b);
 }
+
+
 
 
 int main()
 {
     char plansza[rozmiar_y][rozmiar_x];
+    char plansza_a[rozmiar_y][rozmiar_x];
+    char plansza_b[rozmiar_y][rozmiar_x];
     int generacja=0;
     char koniec;
-    wyczysc(plansza);
+    wyczysc(plansza_a);
+    wyczysc(plansza_b);
     rysuj(plansza);
+    pisz(plansza_a);
+    pisz(plansza_b);
     do{
-    pisz(plansza);
-    rysuj(plansza);
-    check(plansza);
+    system("cls");
+    rysuj(plansza_b);
     printf("Generacja numer: %d\n", ++generacja);
     scanf("%c", &koniec);
+    krok(plansza_a,plansza_b);
     }while(koniec != 'q');
     return 0;
 }
