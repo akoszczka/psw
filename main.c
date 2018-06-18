@@ -30,38 +30,27 @@ void licz_komorki(char plansza[rozmiar_y][rozmiar_x])
     {
         for(j=0; j<rozmiar_x; j++)
         {
-            if((plansza[i][j])=='X')
+            if(plansza[i][j]=='X')
             komorki++;
         }
     }
     printf("Liczba zywych komorek: %d \n", komorki);
 }
+void martwe(char plansza_a[rozmiar_y][rozmiar_x],char plansza_b[rozmiar_y][rozmiar_x],int (*dead))
+{
+    int i,j;
+    for(i=0; i<rozmiar_y; i++)
+    {
+        for(j=0; j<rozmiar_x; j++)
+        {
+            if(plansza_a[i][j]=='X' && plansza_b[i][j]==' ') (*dead)++;
+        }
+    }
+
+}
+
 void pisz(char plansza[rozmiar_y][rozmiar_x])
 {
-   /* int i, j;
-    char wybierz;
-    FILE *dane;
-    dane = fopen("dane1.txt", "r");
-
-    switch(wybierz)
-    {
-        case '1':
-            for(i=0; i<rozmiar_y; i++)
-                for(j=0; j<rozmiar_x; j++)
-                {
-                        plansza[i][j]=getc(dane);
-                        if(j==0 && plansza[i][j]==10) plansza[i][j]=getc(dane);
-                        if(plansza[i][j]==10)
-                        {
-                        plansza[i][j]=0;
-                        }
-                }
-
-        break;
-
-      case '2':
-      case '3':
-      case '4':*/
   plansza[0][1]='X';
   plansza[1][2]='X';
   plansza[2][0]='X';
@@ -80,9 +69,8 @@ void plansza_krok(char plansza_a[rozmiar_y][rozmiar_x], char plansza_b[rozmiar_y
         }
 }
 
-void krok(char plansza_a[rozmiar_y][rozmiar_x], char plansza_b[rozmiar_y][rozmiar_x], int *martwe)
+void krok(char plansza_a[rozmiar_y][rozmiar_x], char plansza_b[rozmiar_y][rozmiar_x])
 {
-    *martwe=0;
     int i,j;
     int ls=0;
 
@@ -105,7 +93,6 @@ void krok(char plansza_a[rozmiar_y][rozmiar_x], char plansza_b[rozmiar_y][rozmia
 
             else if(ls<2 || ls>3)
             {
-            martwe++;
             plansza_b[i][j]=' ';
             }
             ls=0;
@@ -113,8 +100,6 @@ void krok(char plansza_a[rozmiar_y][rozmiar_x], char plansza_b[rozmiar_y][rozmia
 
 
     }
-
-    plansza_krok(plansza_a,plansza_b);
 }
 
 
@@ -122,14 +107,11 @@ void krok(char plansza_a[rozmiar_y][rozmiar_x], char plansza_b[rozmiar_y][rozmia
 
 int main()
 {
-    int martwe=0;
     char plansza[rozmiar_y][rozmiar_x];
     char plansza_a[rozmiar_y][rozmiar_x];
     char plansza_b[rozmiar_y][rozmiar_x];
-    char wybierz;
-    int generacja=0;
-    char koniec;
-    wyczysc(plansza_a);
+    char wybierz, koniec;
+    int generacja=0, dead=0;
     wyczysc(plansza_b);
     rysuj(plansza);
    /* printf("Podaj wybor: ");
@@ -141,9 +123,16 @@ int main()
     rysuj(plansza_b);
     licz_komorki(plansza_b);
     printf("Generacja numer: %d\n", ++generacja);
-    printf("Liczba komorek ktore umarly od startu programu: %d\n", martwe);
+    printf("Komorki, ktore umar³y od poczatku: %d", dead);
     scanf("%c", &koniec);
-    krok(plansza_a,plansza_b,&martwe);
+    krok(plansza_a,plansza_b);
+    martwe(plansza_a,plansza_b,&dead);
+    plansza_krok(plansza_a,plansza_b);
+
     }while(koniec != 'q');
+
+
+
+
     return 0;
 }
