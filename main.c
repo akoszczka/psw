@@ -60,6 +60,26 @@ void pisz(char plansza[rozmiar_y][rozmiar_x])
     for(i=0;i<rozmiar_x;i++)
         plansza[rozmiar_y/2][i]='X';
 }
+
+void pobierz(char plansza[rozmiar_y][rozmiar_x])
+{
+     int i,j;
+     FILE *dane;
+     dane=fopen("dane1.txt","r");
+     if(dane==NULL) printf("W tym katalogu nie ma takiego pliku\n");
+     else
+     {
+        for(i=0; i<rozmiar_y; i++)
+        {
+            for(j=0; j<rozmiar_x; j++)
+            {
+                 if(feof(dane)) break;
+                 fscanf(dane,"%c",&plansza[i][j]);
+                 printf("%c", plansza[i][j]);
+            }
+        }
+    }
+}
 void plansza_krok(char plansza_a[rozmiar_y][rozmiar_x], char plansza_b[rozmiar_y][rozmiar_x]){
     int i,j;
 
@@ -110,20 +130,30 @@ int main()
     char plansza[rozmiar_y][rozmiar_x];
     char plansza_a[rozmiar_y][rozmiar_x];
     char plansza_b[rozmiar_y][rozmiar_x];
-    char wybierz, koniec;
+    char wybierz, koniec, wybor;
     int generacja=0, dead=0;
+    printf("1. x\n");
+    printf("2. x\n");
+    printf("3. x\n");
+    printf("4. plik\n");
+    scanf("%d", &wybor);
     wyczysc(plansza_b);
+    wyczysc(plansza_a);
     rysuj(plansza);
-   /* printf("Podaj wybor: ");
-    scanf("%d", &wybierz);*/
-    pisz(plansza_a);
-    pisz(plansza_b);
+    switch(wybor)
+    {
+        case '1' : pisz(plansza_a); pisz(plansza_b); break;
+        case '2' : pisz(plansza_a); pisz(plansza_b); break;
+        case '3' : pisz(plansza_a); pisz(plansza_b); break;
+        case '4' : pobierz(plansza_a); pobierz(plansza_b); break;
+        default : pisz(plansza_a); pisz(plansza_b); break;
+    }
     do{
     system("cls");
     rysuj(plansza_b);
     licz_komorki(plansza_b);
     printf("Generacja numer: %d\n", ++generacja);
-    printf("Komorki, ktore umar³y od poczatku: %d", dead);
+    printf("Komorki, ktore umarly od poczatku: %d", dead);
     scanf("%c", &koniec);
     krok(plansza_a,plansza_b);
     martwe(plansza_a,plansza_b,&dead);
