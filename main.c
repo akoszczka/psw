@@ -49,18 +49,82 @@ void martwe(char plansza_a[rozmiar_y][rozmiar_x],char plansza_b[rozmiar_y][rozmi
 
 }
 
-void pisz(char plansza[rozmiar_y][rozmiar_x])
+void glider(char plansza[rozmiar_y][rozmiar_x])
 {
   plansza[0][1]='X';
   plansza[1][2]='X';
   plansza[2][0]='X';
   plansza[2][1]='X';
   plansza[2][2]='X';
-  int i;
-    for(i=0;i<rozmiar_x;i++)
-        plansza[rozmiar_y/2][i]='X';
 }
 
+void glider_gun(char plansza[rozmiar_y][rozmiar_x])
+{
+  plansza[5][1]='X';
+  plansza[5][2]='X';
+  plansza[6][1]='X';
+  plansza[6][2]='X';
+  plansza[5][11]='X';
+  plansza[6][11]='X';
+  plansza[7][11]='X';
+  plansza[4][12]='X';
+  plansza[3][13]='X';
+  plansza[3][14]='X';
+  plansza[8][12]='X';
+  plansza[9][13]='X';
+  plansza[9][14]='X';
+  plansza[6][15]='X';
+  plansza[4][16]='X';
+  plansza[5][17]='X';
+  plansza[6][17]='X';
+  plansza[7][17]='X';
+  plansza[6][18]='X';
+  plansza[8][16]='X';
+  plansza[3][21]='X';
+  plansza[4][21]='X';
+  plansza[5][21]='X';
+  plansza[3][22]='X';
+  plansza[4][22]='X';
+  plansza[5][22]='X';
+  plansza[2][23]='X';
+  plansza[6][23]='X';
+  plansza[1][25]='X';
+  plansza[2][25]='X';
+  plansza[6][25]='X';
+  plansza[7][25]='X';
+  plansza[3][35]='X';
+  plansza[4][35]='X';
+  plansza[3][36]='X';
+  plansza[4][36]='X';
+}
+void pento(char plansza[rozmiar_y][rozmiar_x])
+{
+  plansza[7][11]='X';
+  plansza[6][12]='X';
+  plansza[7][12]='X';
+  plansza[8][12]='X';
+  plansza[6][13]='X';
+}
+
+
+void beacon(char plansza[rozmiar_y][rozmiar_x])
+{
+  plansza[1][1]='X';
+  plansza[2][1]='X';
+  plansza[1][2]='X';
+  plansza[4][3]='X';
+  plansza[3][4]='X';
+  plansza[4][4]='X';
+}
+
+void cross(char plansza[rozmiar_y][rozmiar_x])
+{
+    int i,j;
+    for(i=0;i<rozmiar_y;i++)
+        plansza[i][rozmiar_x/2]='X';
+     for(j=0;j<rozmiar_x;j++)
+        plansza[rozmiar_y/2][j]='X';
+}
 void pobierz(char plansza[rozmiar_y][rozmiar_x])
 {
      int i,j;
@@ -132,21 +196,25 @@ int main()
     char plansza_b[rozmiar_y][rozmiar_x];
     char wybierz, koniec, wybor;
     int generacja=0, dead=0;
-    printf("1. x\n");
-    printf("2. x\n");
-    printf("3. x\n");
-    printf("4. plik\n");
+    printf("1. Glider\n");
+    printf("2. Gosper Glider Gun\n");
+    printf("3. R-Pentomimo\n");
+    printf("4. Beacon\n");
+    printf("5. Krzyz\n");
+    printf("6. Dane wprowadzone z pliku\n");
     scanf("%d", &wybor);
     wyczysc(plansza_b);
     wyczysc(plansza_a);
     rysuj(plansza);
     switch(wybor)
     {
-        case '1' : pisz(plansza_a); pisz(plansza_b); break;
-        case '2' : pisz(plansza_a); pisz(plansza_b); break;
-        case '3' : pisz(plansza_a); pisz(plansza_b); break;
-        case '4' : pobierz(plansza_a); pobierz(plansza_b); break;
-        default : pisz(plansza_a); pisz(plansza_b); break;
+        case 1 : glider(plansza_a); glider(plansza_b); break;
+        case 2 : glider_gun(plansza_a); glider_gun(plansza_b); break;
+        case 3 : pento(plansza_a); pento(plansza_b); break;
+        case 4 : beacon(plansza_a); beacon(plansza_b); break;
+        case 5 : cross(plansza_a); cross(plansza_b); break;
+        case 6 : pobierz(plansza_a); pobierz(plansza_b); break;
+        default : printf("Wybor spoza listy - wybrano domyslnie glider"); glider(plansza_a); glider(plansza_b); break;
     }
     do{
     system("cls");
